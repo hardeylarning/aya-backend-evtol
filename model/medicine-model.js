@@ -5,6 +5,10 @@ const medicineSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userId: {
+        type: String,
+        required: true
+    },
     weight: {
         type: Number,
         required: [true, 'Weight is required']
@@ -24,6 +28,6 @@ const medicineSchema = new mongoose.Schema({
 }
 )
 
-const Medicine = mongoose.model("Medicine", evtolSchema);
+const Medicine = mongoose.model("Medicine", medicineSchema);
 
 export default Medicine;
