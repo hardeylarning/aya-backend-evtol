@@ -47,27 +47,22 @@ export const loadEvtolController = async (req, res) => {
 
     if(evtol.batteryCapacity < 25) return res.json({
         status: "error",
-        message: "Evtol battery is bellow 25%, kindly check for another available Evtol"
+        message: "Evtol battery is below 25%, kindly check for another available Evtol"
     })
-
     const medicine = await Medicine.findById(req.params.medicineId)
-
     if(!medicine) {
         return res.json({
             status: "error",
             message: "No Medicine found"
           });
     }
-
     let weight = evtol.weight + medicine.weight
-
     if(weight > 500) {
         return res.json({
             status: "error",
             message: "Medication weight is more than what this Evtol can carry, kindly use another Evtol"
           });
     }
-
     evtol.medicines.push(medicine._id)
     evtol.weight = weight;
     await evtol.save()
@@ -75,31 +70,21 @@ export const loadEvtolController = async (req, res) => {
       status: "success",
       data: evtol,
     });
-
   } 
   catch (error) {
     res.json(error.message);
   }
 };
 
-export const evtolsController = async (req, res) => {
-  try {
-    const evtols = await Evtol.find({})
-    res.json({
-      status: "success",
-      data: evtols,
-    });
-
-  } 
-  catch (error) {
-    res.json(error.message);
-  }
-};
 
 export const evtolLoadedMedicinesController = async (req, res) => {
-  const evtolId = req.params.evtolId
   try {
-    const evtol = await Evtol.findById({_id: evtolId})
+    const evtol = await Evtol.findById({_id: req.params.evtolId})
+    if(!evtol) return res.json({
+        status: "error",
+        message: "No EVTOL found"
+    })
+
     res.json({
       status: "success",
       data: evtol.medicines,
@@ -111,7 +96,6 @@ export const evtolLoadedMedicinesController = async (req, res) => {
 
 export const availableEvtolController = async (req, res) => {
     try {
-
         const evtol = await Medicine.find({state: 'IDLE'})
         res.json({
             status: "success",
@@ -136,6 +120,20 @@ export const availableEvtolController = async (req, res) => {
       });
 
     } catch (error) {
+      res.json(error.message);
+    }
+  };
+
+  export const evtolsController = async (req, res) => {
+    try {
+      const evtols = await Evtol.find({})
+      res.json({
+        status: "success",
+        data: evtols,
+      });
+  
+    } 
+    catch (error) {
       res.json(error.message);
     }
   };
