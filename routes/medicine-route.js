@@ -1,7 +1,9 @@
 import express from "express";
+import cloudinaryStorage from "../config/cloudinary.js";
 import { 
   deleteMedicineController, 
   getMedicineController, 
+  medicineImageUploadController, 
   medicinesController, 
   newMedicineController, 
   updateMedicineController 
@@ -12,7 +14,9 @@ import { isLoggedIn } from "../middleware/is-logged-in.js";
 
 const medicineRoute = express.Router();
 
-medicineRoute.post("/", isLoggedIn, newMedicineController);
+const upload = multer({cloudinaryStorage})
+
+medicineRoute.post("/", isLoggedIn, upload.single("imageUrl"), newMedicineController);
 
 medicineRoute.get("/", isLoggedIn, medicinesController);
 
@@ -21,5 +25,7 @@ medicineRoute.get("/:id", isLoggedIn, getMedicineController);
 medicineRoute.put("/:id", isLoggedIn, updateMedicineController);
 
 medicineRoute.delete("/:id", isLoggedIn, deleteMedicineController);
+
+medicineRoute.put("/image/:id", isLoggedIn, upload.single("imageUrl"), medicineImageUploadController);
 
 export default medicineRoute;

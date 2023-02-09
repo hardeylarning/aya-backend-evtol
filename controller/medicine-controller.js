@@ -2,7 +2,8 @@ import User from "../model/user-model.js";
 import Medicine from "../model/medicine-model.js";
 
 export const newMedicineController = async (req, res) => {
-  const { name, weight, userId, code, imageUrl } = req.body;
+  const { name, weight, userId, code } = req.body;
+  const { imageUrl } = req.file.path
   try {
     const userFound = await User.findOne({ _id: req.userAuth });
     if (!userFound) return res.json({ status: "error", message: "Oop! Invalid credential, kindly login before accessing this page" });
@@ -105,21 +106,21 @@ export const updateMedicineController = async (req, res) => {
   }
 };
 
-export const profileImageUploadController = async (req, res) => {
-  // console.log("File: ", req.file);
+export const medicineImageUploadController = async (req, res) => {
+  const {id} = req.params
   try {
-    const foundUser = await User.findById(req.userAuth)
-    if(!foundUser) return res.json({status: "error", message: "No user found for the id passed!"})
+    const foundMedicine = await Medicine.findById(id)
+    if(!foundMedicine) return res.json({status: "error", message: "No Medicine found for the id passed!"})
 
     if (req.file) {
-      const user = await User.findByIdAndUpdate(req.userAuth, {
-        $set: {profilephoto: req.file.path}
+      const medicine = await Medicine.findByIdAndUpdate(id, {
+        $set: {imageUrl: req.file.path}
       }, {
         new: true
       })
       res.json({
         status: "success",
-        data: user,
+        data: medicine,
       });
 
     }
