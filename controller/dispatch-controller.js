@@ -6,7 +6,16 @@ export const registerEvtolController = async (req, res) => {
   const { model, weight, userId, batteryCapacity, state } = req.body;
   try {
     const userFound = await User.findOne({ _id: req.userAuth });
-    if (!userFound) return res.json({ status: "error", message: "Oop! Invalid credential, kindly login before accessing this page" });
+    if (!userFound) return res.json({
+         status: "error", 
+        message: "Oop! Invalid credential, kindly login before accessing this page" 
+    });
+
+    if (userFound.role !== 'Admin') return res.json({
+         status: "error", 
+        message: "Oop! Invalid credential, you are not authorized to access this endpoint" 
+    });
+
 
     const evtol = await Evtol.create({
       model,
@@ -50,10 +59,21 @@ export const loadEvtolController = async (req, res) => {
           });
     }
 
+    let weight = evtol.weight + medicine.weight
+
+    if(weight > 500) {
+        return res.json({
+            status: "error",
+            message: "Medication weight is more than what this Evtol can carry, kindly use another Evtol"
+          });
+    }
+
     evtol.medicines.push(medicine._id)
+    evtol.weight = weight;
+    await evtol.save()
     res.json({
       status: "success",
-      data: evtols,
+      data: evtol,
     });
 
   } 
