@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import cloudinaryStorage from "../config/cloudinary.js";
 import { 
   deleteMedicineController, 
@@ -26,6 +27,6 @@ medicineRoute.put("/:id", isLoggedIn, updateMedicineController);
 
 medicineRoute.delete("/:id", isLoggedIn, deleteMedicineController);
 
-medicineRoute.put("/image/:id", isLoggedIn, upload.single("imageUrl"), medicineImageUploadController);
+medicineRoute.post("/image/:id", isLoggedIn, upload.single("imageUrl"), medicineImageUploadController);
 
 export default medicineRoute;

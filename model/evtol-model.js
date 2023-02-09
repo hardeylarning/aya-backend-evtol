@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
 const evtolSchema = new mongoose.Schema({
+    serialNumber: {
+        type: String
+    },
     model: {
         type: String,
         enum: ["Lightweight", "Middleweight", "Cruiseweight", "Heavyweight"]
@@ -17,7 +20,13 @@ const evtolSchema = new mongoose.Schema({
     state: {
         type: String,
         enum: ["IDLE", "LOADING", "LOADED","DELIVERING", "DELIVERED", "RETURNING"]
-    }
+    },
+    medicines: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Medicine"
+        }
+    ],
 
 },
 {

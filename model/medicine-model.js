@@ -18,7 +18,8 @@ const medicineSchema = new mongoose.Schema({
         required: [true, 'Weight is required']
     },
     imageUrl: {
-        type: String
+        type: String,
+        default: "url"
     }
 
 },

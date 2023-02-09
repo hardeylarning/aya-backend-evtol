@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors'
 import { dBConnection } from './config/db-connect.js';
+import userRoute from './routes/user-route.js';
+import medicineRoute from './routes/medicine-route.js';
 
 dotenv.config();
 dBConnection();
@@ -13,7 +15,8 @@ app.use(cors())
 
 app.use(express.json())
 
-app.use("/api/v1/users", "")
+app.use("/api/v1/users", userRoute)
+app.use("/api/v1/medicines", medicineRoute)
 
 
 

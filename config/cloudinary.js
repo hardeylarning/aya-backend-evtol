@@ -17,7 +17,7 @@ const cloudinaryStorage = new CloudinaryStorage({
     cloudinary,
     allowedFormats: ["jpg", "png", "jpeg", "gif"],
     params: {
-        folder: "evtol-images",
+        folder: "forum-images",
         transformation:[{
             width: 400,
             height: 400,
