@@ -1,5 +1,6 @@
 import User from "../model/user-model.js";
 import Evtol from "../model/evtol-model.js";
+import Medicine from "../model/medicine-model.js";
 
 export const registerEvtolController = async (req, res) => {
   const { model, weight, userId, batteryCapacity, state } = req.body;
@@ -22,6 +23,41 @@ export const registerEvtolController = async (req, res) => {
       data: evtol,
     });
   } catch (error) {
+    res.json(error.message);
+  }
+};
+
+export const loadEvtolController = async (req, res) => {
+  try {
+    const evtol = await Evtol.findById(req.params.evtolId)
+
+    if(!evtol) return res.json({
+        status: "error",
+        message: "No EVTOL found"
+    })
+
+    if(evtol.batteryCapacity < 25) return res.json({
+        status: "error",
+        message: "Evtol battery is bellow 25%, kindly check for another available Evtol"
+    })
+
+    const medicine = await Medicine.findById(req.params.medicineId)
+
+    if(!medicine) {
+        return res.json({
+            status: "error",
+            message: "No Medicine found"
+          });
+    }
+
+    evtol.medicines.push(medicine._id)
+    res.json({
+      status: "success",
+      data: evtols,
+    });
+
+  } 
+  catch (error) {
     res.json(error.message);
   }
 };
@@ -55,27 +91,28 @@ export const evtolLoadedMedicinesController = async (req, res) => {
 
 export const availableEvtolController = async (req, res) => {
     try {
+
         const evtol = await Medicine.find({state: 'IDLE'})
+        res.json({
+            status: "success",
+            data: evtol,
+        });
 
-      res.json({
-        status: "success",
-        data: evtol,
-      });
-
-    } catch (error) {
+    } 
+    catch (error) {
       res.json(error.message);
     }
   };
   
-  export const deleteMedicineController = async (req, res) => {
+  export const checkEvtolBatteryLevelController = async (req, res) => {
     const {id} = req.params;
     try {
-      const medicine = await Medicine.findOneAndDelete({_id: id})
-      if(!medicine) return res.json({status: "error", message: "Medicine not found!"})
+      const evtol = await Evtol.findById({_id: id})
+      if(!evtol) return res.json({status: "error", message: "Evtol not found!"})
 
       res.json({
         status: "success",
-        data: medicine,
+        data: evtol.batteryCapacity,
       });
 
     } catch (error) {
@@ -83,55 +120,4 @@ export const availableEvtolController = async (req, res) => {
     }
   };
 
-export const updateMedicineController = async (req, res) => {
-  const {id} = req.params;
-  const { name, weight, code } = req.body
-  try {
 
-    const foundMedicine = await Medicine.findOneAndUpdate({_id: id}, {name, weight, code}, {
-      new: true,
-      runValidators: true
-    })
-    if(!foundMedicine) return res.json({status: "error", message: "No medicine found!"})
-
-    res.json({
-      status: "success",
-      data: `${foundMedicine.name}, has been updated sucessfully`,
-    });
-  } catch (error) {
-    res.json(error.message);
-  }
-};
-
-export const medicineImageUploadController = async (req, res) => {
-  const {id} = req.params
-  try {
-    const foundMedicine = await Medicine.findById(id)
-    if(!foundMedicine) return res.json({status: "error", message: "No Medicine found for the id passed!"})
-
-    if (req.file) {
-      console.log("Path: ", req.file);
-      const medicine = await Medicine.findByIdAndUpdate(id, {
-        $set: {imageUrl: req.file.path}
-      }, {
-        new: true
-      })
-      res.json({
-        status: "success",
-        data: medicine,
-      });
-
-    }
-    else {
-      res.json({
-        status: "error",
-        data: "no image was attached",
-      });
-    }
-
-    
-  } 
-  catch (error) {
-    res.json(error.message);
-  }
-};
