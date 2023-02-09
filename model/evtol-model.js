@@ -11,7 +11,8 @@ const evtolSchema = new mongoose.Schema({
         max: [500, 'Weight that eVTOL can carry can\'t be more than 500kg']
     },
     batteryCapacity: {
-          
+          type: Number,
+          max: [100, 'battery is measured in percentage and cannot be more than 100%']
     },
     state: {
         type: String,
