@@ -56,15 +56,15 @@ export const loadEvtolController = async (req, res) => {
             message: "No Medicine found"
           });
     }
-    let weight = evtol.weight + medicine.weight
-    if(weight > 500) {
+    // let weight = evtol.weight + medicine.weight
+    if(medicine.weight > evtol.weight) {
         return res.json({
             status: "error",
             message: "Medication weight is more than what this Evtol can carry, kindly use another Evtol"
           });
     }
     evtol.medicines.push(medicine._id)
-    evtol.weight = weight;
+    // evtol.weight = weight;
     await evtol.save()
     res.json({
       status: "success",
