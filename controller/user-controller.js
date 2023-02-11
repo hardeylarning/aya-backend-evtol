@@ -147,6 +147,26 @@ export const userUpdateController = async (req, res) => {
   }
 };
 
+export const userUpdateRoleController = async (req, res) => {
+  // const {id} = req.id
+  const {role} = req.params.role
+  try {
+    const {isAdmin} = role === 'Admin'? true : false
+    const foundUser = await User.findOneAndUpdate({_id: req.params.id}, {role, isAdmin}, {
+      new: true,
+      runValidators: true
+    })
+    if(!foundUser) return res.json({status: "error", message: "No user found for the id passed!"})
+
+    res.json({
+      status: "success",
+      data: `Dear ${foundUser.fullname}, role has been changed successfully`,
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
 export const userForgotPasswordController = async (req, res) => {
   const {email} = req.params
   const {password} = req.body

@@ -13,7 +13,7 @@ cloudinary.config({
 
 // create an instance of cloudinary storage
 
-const cloudinaryStorage = new CloudinaryStorage({
+const storage = new CloudinaryStorage({
     cloudinary,
     allowedFormats: ["jpg", "png", "jpeg", "gif"],
     params: {
@@ -26,4 +26,4 @@ const cloudinaryStorage = new CloudinaryStorage({
     }
 })
 
-export default cloudinaryStorage;
+export default storage;

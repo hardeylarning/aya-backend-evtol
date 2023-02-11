@@ -3,8 +3,9 @@ import Medicine from "../model/medicine-model.js";
 
 export const newMedicineController = async (req, res) => {
   const { name, weight, userId, code } = req.body;
-  const { imageUrl } = req.file ? req.file.path : "url"
+  
   try {
+    const { imageUrl } = req.file ? req.file.path : "url"
     const userFound = await User.findOne({ _id: req.userAuth });
     if (!userFound) return res.json({ status: "error", message: "Oop! Invalid credential, kindly login before accessing this page" });
 
@@ -115,7 +116,7 @@ export const medicineImageUploadController = async (req, res) => {
     if (req.file) {
       console.log("Path: ", req.file);
       const medicine = await Medicine.findByIdAndUpdate(id, {
-        $set: {imageUrl: req.file.path}
+        $set: {imageUrl: req.file.path? req.file.path : "img"}
       }, {
         new: true
       })
