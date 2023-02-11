@@ -53,7 +53,7 @@ export const loadEvtolController = async (req, res) => {
     if(!medicine) {
         return res.json({
             status: "error",
-            message: "No Medicine found"
+            message: "No Medicine found" 
           });
     }
     // let weight = evtol.weight + medicine.weight
