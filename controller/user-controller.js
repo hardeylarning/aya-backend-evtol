@@ -149,10 +149,11 @@ export const userUpdateController = async (req, res) => {
 
 export const userUpdateRoleController = async (req, res) => {
   // const {id} = req.id
-  const {role} = req.params.role
+  const role = req.params.role
   try {
-    const {isAdmin} = role === 'Admin'? true : false
-    const foundUser = await User.findOneAndUpdate({_id: req.params.id}, {role, isAdmin}, {
+    const isAdmin = role === 'Admin'? true : false
+    // console.log('Role: ', role, 'IsAdmin: ', isAdmin);
+    const foundUser = await User.findOneAndUpdate({_id: req.params.id}, {role:role, isAdmin: isAdmin}, {
       new: true,
       runValidators: true
     })
@@ -160,7 +161,7 @@ export const userUpdateRoleController = async (req, res) => {
 
     res.json({
       status: "success",
-      data: `Dear ${foundUser.fullname}, role has been changed successfully`,
+      data: `The ${foundUser.fullname}, role has been changed successfully`,
     });
   } catch (error) {
     res.json(error.message);

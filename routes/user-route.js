@@ -9,6 +9,7 @@ import {
   userRegisterController,
   usersController,
   userUpdateController,
+  userUpdateRoleController,
 } from "../controller/user-controller.js";
 import { hasAccess } from "../middleware/has-access.js";
 import { isLoggedIn } from "../middleware/is-logged-in.js";
@@ -27,6 +28,8 @@ userRoute.get("/profile", isLoggedIn, userGetController);
 userRoute.get("/get-by-email/:email",  userGetByEmailController);
 
 userRoute.put("/", isLoggedIn, userUpdateController);
+
+userRoute.put("/change-role/:id/:role", isLoggedIn, userUpdateRoleController);
 
 userRoute.put("/reset-password/:email", userForgotPasswordController);
 
