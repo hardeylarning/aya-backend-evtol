@@ -45,6 +45,7 @@ export const userLoginController = async (req, res) => {
         fullname: foundUser.fullname,
         email: foundUser.email,
         userId: foundUser._id,
+        role: foundUser.role,
         token: generateToken(foundUser._id, foundUser.role)
       },
     });

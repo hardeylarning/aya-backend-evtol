@@ -17,7 +17,7 @@ app.use(express.json())
 
 app.use("/api/v1/users", userRoute)
 app.use("/api/v1/medicines", medicineRoute)
-app.use("/api/v1/evtol", dispatchRoute)
+app.use("/api/v1/evtols", dispatchRoute)
 
 
 

@@ -5,16 +5,18 @@ export const newMedicineController = async (req, res) => {
   const { name, weight, userId, code } = req.body;
   
   try {
-    const { imageUrl } = req.file ? req.file.path : "url"
     const userFound = await User.findOne({ _id: req.userAuth });
     if (!userFound) return res.json({ status: "error", message: "Oop! Invalid credential, kindly login before accessing this page" });
+
+     if(name.match(/[^\w_-]/) != null) {
+      return res.json({ status: "error", message: "Sorry, kindly note that name can only contains characters and _ -" });
+     }
 
     const medicine = await Medicine.create({
       name,
       userId: userId ? userId : req.userAuth,
       weight,
-      code,
-      imageUrl
+      code
     });
 
     if (!medicine) return res.json({status: "error", message: "Network Error!"})

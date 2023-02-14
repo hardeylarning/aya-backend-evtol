@@ -17,7 +17,7 @@ const medicineRoute = express.Router();
 
 const upload = multer({storage})
 
-medicineRoute.post("/", isLoggedIn, upload.single("imageUrl"), newMedicineController);
+medicineRoute.post("/", isLoggedIn, newMedicineController);
 
 medicineRoute.get("/", isLoggedIn, medicinesController);
 

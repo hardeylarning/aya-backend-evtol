@@ -2,7 +2,9 @@ import express from "express";
 import { 
   availableEvtolController, 
   checkEvtolBatteryLevelController, 
+  evtolController, 
   evtolLoadedMedicinesController, 
+  evtolsController, 
   loadEvtolController, 
   registerEvtolController 
 } from "../controller/dispatch-controller.js";
@@ -14,12 +16,16 @@ const dispatchRoute = express.Router();
 
 dispatchRoute.post("/", isLoggedIn, hasAccess, registerEvtolController);
 
-dispatchRoute.get("loading/:evtolId/:medicineId", isLoggedIn, loadEvtolController);
+dispatchRoute.put("/loading/:id", isLoggedIn, loadEvtolController);
 
-dispatchRoute.get("loaded/:evtolId", isLoggedIn, evtolLoadedMedicinesController);
+dispatchRoute.get("/:id", isLoggedIn, evtolController);
 
-dispatchRoute.get("/available", isLoggedIn, availableEvtolController);
+dispatchRoute.get("/", isLoggedIn, evtolsController);
 
-dispatchRoute.get("check-battery/:id", isLoggedIn, checkEvtolBatteryLevelController);
+dispatchRoute.get("/loaded/:evtolId", isLoggedIn, evtolLoadedMedicinesController);
+
+dispatchRoute.get("/available/all", isLoggedIn, availableEvtolController);
+
+dispatchRoute.get("/check-battery/:id", isLoggedIn, checkEvtolBatteryLevelController);
 
 export default dispatchRoute;

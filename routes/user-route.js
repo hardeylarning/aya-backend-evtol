@@ -19,9 +19,9 @@ const userRoute = express.Router();
 userRoute.post("/login", userLoginController);
 userRoute.post("/register", userRegisterController);
 
-userRoute.get("/", isLoggedIn, usersController);
+userRoute.get("/", isLoggedIn, hasAccess, usersController);
 
-userRoute.get("/:id", isLoggedIn, hasAccess, adminGetUserController);
+userRoute.get("/:id", isLoggedIn, adminGetUserController);
 
 userRoute.get("/profile", isLoggedIn, userGetController);
 

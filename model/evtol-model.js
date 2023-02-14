@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const evtolSchema = new mongoose.Schema({
-    serialNumber: {
-        type: String
-    },
+    // serialNumber: {
+    //     type: String
+    // },
     model: {
         type: String,
         enum: ["Lightweight", "Middleweight", "Cruiseweight", "Heavyweight"]
