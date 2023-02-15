@@ -4,6 +4,7 @@ import storage from "../config/cloudinary.js";
 import { 
   deleteMedicineController, 
   getMedicineController, 
+  getUserMedicinesController, 
   medicineImageUploadController, 
   medicinesController, 
   newMedicineController, 
@@ -17,9 +18,9 @@ const medicineRoute = express.Router();
 
 const upload = multer({storage})
 
-medicineRoute.post("/", isLoggedIn, newMedicineController);
+medicineRoute.post("/", isLoggedIn, upload.single("imageUrl"), newMedicineController);
 
-medicineRoute.get("/", isLoggedIn, medicinesController);
+medicineRoute.get("/", isLoggedIn, getUserMedicinesController);
 
 medicineRoute.get("/:id", isLoggedIn, getMedicineController);
 

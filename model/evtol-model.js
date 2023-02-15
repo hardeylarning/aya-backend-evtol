@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 
+
 const evtolSchema = new mongoose.Schema({
-    // serialNumber: {
-    //     type: String
-    // },
     model: {
         type: String,
-        enum: ["Lightweight", "Middleweight", "Cruiseweight", "Heavyweight"]
+        enum: ["Lightweight", "Middleweight", "Cruiseweight", "Heavyweight"],
+        default: "Lightweight"
     },
     weight: {
         type: Number,
@@ -19,14 +18,14 @@ const evtolSchema = new mongoose.Schema({
     },
     state: {
         type: String,
-        enum: ["IDLE", "LOADING", "LOADED","DELIVERING", "DELIVERED", "RETURNING"]
+        enum: ["IDLE", "LOADING", "LOADED","DELIVERING", "DELIVERED", "RETURNING"],
+        default: "IDLE"
     },
-    medicines: [
+    medicine:
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Medicine"
-        }
-    ],
+        },
 
 },
 {

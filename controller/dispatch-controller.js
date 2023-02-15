@@ -1,10 +1,9 @@
 import User from "../model/user-model.js";
 import Evtol from "../model/evtol-model.js";
 import Medicine from "../model/medicine-model.js";
-import { responseMessage } from "../util/response-helper.js";
 
 export const registerEvtolController = async (req, res) => {
-  const { serialNumber, model, weight, userId, batteryCapacity, state } = req.body;
+  const { serialNumber, model, weight, userId, batteryCapacity } = req.body;
   try {
     const userFound = await User.findOne({ _id: req.userAuth });
     if (!userFound) return res.json({
@@ -17,14 +16,20 @@ export const registerEvtolController = async (req, res) => {
         message: "Oop! Invalid credential, you are not authorized to access this endpoint" 
     });
 
+    if (weight > 500) {
+      return res.json({
+        status: "error", 
+        message: "Evtol weight can't be more than 500" 
+      });
+    }
+
 
     const evtol = await Evtol.create({
         serialNumber,
-        model,
+        model: String(model),
         userId: userId ? userId : req.userAuth,
         weight,
-        batteryCapacity,
-        state
+        batteryCapacity
     });
 
     if (!evtol) return res.json({status: "error", message: "Network Error!"})
