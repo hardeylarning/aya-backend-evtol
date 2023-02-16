@@ -75,9 +75,9 @@ export const loadEvtolController = async (req, res) => {
           });
     }
 
-    evtol.medicines.push(medicine._id)
+    evtol.medicine = medicine
     
-    console.log('Medicine: ', evtol);
+    // console.log('Medicine: ', evtol);
     evtol.state = 'LOADED'
     await evtol.save()
 
